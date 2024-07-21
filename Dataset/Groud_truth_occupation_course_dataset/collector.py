@@ -2,6 +2,11 @@
 import pandas as pd
 import requests
 import json
+import os
+def ensure_directory_exists(directory):
+    """Ensure directory exists. If not, create it."""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 def get_oauth_token():
     # API endpoint URL
@@ -29,12 +34,13 @@ def get_oauth_token():
         print("Token request failed:", response.text)
         return None
 
-def query_weiterbildungssuche_api(token, params,beruf_id):
+def query_weiterbildungssuche_api(filepath, token, params,beruf_id):
     # Set API URL
     api_url = "https://rest.arbeitsagentur.de/infosysbub/wbsuche/pc/v2/bildungsangebot"
     
     # Prepare request headers
-    
+    result_path = os.path.join(filepath, "aw_course")
+    ensure_directory_exists(result_path)
     current_page = 0
     rety_count = 0
     while True:
@@ -47,7 +53,7 @@ def query_weiterbildungssuche_api(token, params,beruf_id):
             rety_count = 0
             wb_data = response.json()
             file_name = "_".join(f"{k}_{v}" for k, v in params.items() if k != "page")
-            with open(f"Data/data_collection/occupation_base_courses/result/result_{beruf_id}_{file_name}_page_{params['page']}.json", "w") as result_file:
+            with open(os.path.join(result_path,f"result_{beruf_id}_{file_name}_page_{params['page']}.json"), "w") as result_file:
                 json.dump(wb_data, result_file, indent=4)
             print(f"result saved to result_{beruf_id}_{file_name}_page_{params['page']}.json")
 
@@ -69,24 +75,24 @@ def query_weiterbildungssuche_api(token, params,beruf_id):
             continue
             
             
-
-berufe_info = pd.read_csv('./Data/data_collection/Berufenet/berufe_info.csv')
-# get id and entry requirement
-token = get_oauth_token()
-flag = 0
-for index, row in berufe_info.iterrows():
-    if flag ==0 and row['id'] != 89948:
-        continue
-    flag = 1
-    BA_berufe = set()
-    entry_requirement = row['entry requirements']
-    corrected_json_string = entry_requirement.replace("'", '"')
-    entry_requirement_json = json.loads(corrected_json_string)
-    for js in entry_requirement_json:
-        BA_berufe.add(str(js['data_idref']))
-    for id in BA_berufe:
-        params = {
-            'page': 0,
-            "ids": id
-            }
-        response = query_weiterbildungssuche_api(token, params,row['id'])
+def get_aw_courses(filepath):
+    berufe_info = pd.read_csv(os.path.join(filepath,'occupation_info.csv'))
+    # get id and entry requirement
+    token = get_oauth_token()
+    flag = 0
+    for index, row in berufe_info.iterrows():
+        if flag ==0 and row['id'] != 89948:
+            continue
+        flag = 1
+        BA_berufe = set()
+        entry_requirement = row['entry requirements']
+        corrected_json_string = entry_requirement.replace("'", '"')
+        entry_requirement_json = json.loads(corrected_json_string)
+        for js in entry_requirement_json:
+            BA_berufe.add(str(js['data_idref']))
+        for id in BA_berufe:
+            params = {
+                'page': 0,
+                "ids": id
+                }
+            query_weiterbildungssuche_api(filepath, token, params,row['id'])

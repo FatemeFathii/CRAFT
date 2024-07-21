@@ -201,11 +201,8 @@ def json_to_csv(filepath):
 
     print("Data extraction and CSV writing complete.")
 
-def get_berufenet(filename='./Dataset/Groud_truth_occupation_course_dataset/berufenet'):
+def get_berufenet(filename):
     get_occupation_list(filename)
     get_occupation_detail(filename)
     json_to_csv(filename)
 
-
-if __name__ == '__main__':
-    fire.Fire(get_berufenet)
