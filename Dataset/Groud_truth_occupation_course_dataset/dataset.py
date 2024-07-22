@@ -5,6 +5,7 @@ from occupation_course_matching import get_ab_courses
 from preprocess import process_aw
 import os
 import pandas as pd
+
 def ensure_directory_exists(directory):
     """Ensure directory exists. If not, create it."""
     if not os.path.exists(directory):
