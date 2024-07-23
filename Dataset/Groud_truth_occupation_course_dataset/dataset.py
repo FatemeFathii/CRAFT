@@ -26,10 +26,10 @@ def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data'
     data1 = pd.read_csv(os.path.join(filepath,'occupation_course_info_aw.csv'))
     data2 = pd.read_csv(os.path.join(filepath,'occupation_course_info_ab.csv'))
     
-    # 合并数据
+
     merged_data = pd.concat([data1, data2], ignore_index=True)
     
-    # 将合并后的数据保存到新的CSV文件
+   
     merged_data.to_csv(os.path.join(filepath,'occupation_course_info.csv'), index=False)
 
 

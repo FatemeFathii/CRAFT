@@ -1,4 +1,4 @@
-#read csv from ./Data/data_collection/Berufenet/berufe_info.csv
+
 import pandas as pd
 import requests
 import json

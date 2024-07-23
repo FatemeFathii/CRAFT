@@ -107,10 +107,10 @@ def data_preprocess(filepath):
 
     # Initialize columns in the new DataFrame
     df_new = pd.DataFrame()
-    df_new['course_id'] = df['id']
-    df_new['course_content'] = df.apply(process_text_udemy, axis=1)
-    df_new['title'] = df['title']
-    df_new['url'] = df['url']
+    df_new['ID'] = df['id']
+    df_new['Content'] = df.apply(process_text_udemy, axis=1)
+    df_new['Title'] = df['title']
+    df_new['Link'] = df['url']
 
 
     # Save the new DataFrame to a CSV file
