@@ -65,6 +65,7 @@ torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_domian_pretr
 ```
 
 After training, the encoder model will saved to {output_dir}/encoder_model
+We offer a trained model [**wt3639/EduGBERT**](https://huggingface.co/wt3639/EduGBERT)
 
 ### 2. BERT-base Skill Extractor
 
@@ -75,6 +76,8 @@ prodigy hf.train.ner ner_course_train,eval:ner_course_test {output path} \
 --batch-size 32 \
 -lr 5e-6 
 ```
+
+We offer a trained model [**wt3639/NER_skill_extractor**](https://huggingface.co/wt3639/NER_skill_extractor)
 
 ### 3. BERT-base Course Retriever
 
@@ -90,7 +93,7 @@ torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_base_course_
 --dataloader_drop_last True \
 --normlized True \
 --temperature 0.02 \
---query_max_len 360 \\
+--query_max_len 360 \
 --passage_max_len 512 \
 --train_group_size 15 \
 --negatives_cross_device \
@@ -98,6 +101,7 @@ torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_base_course_
 --save_steps 1000 \
 --query_instruction_for_retrieval
 ```
+We offer a trained model [**wt3639/EduGBERT_CourseRec**](https://huggingface.co/wt3639/EduGBERT_CourseRec)
 
 ### 4. LLM Ranker
 
@@ -119,6 +123,7 @@ CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_ranker/finetune_rec.py \
                     --train_on_inputs \
                     --group_by_length 
 ```
+We offer a trained model [**wt3639/Llama-3-8B-Instruct_CourseRec_lora**](https://huggingface.co/wt3639/Llama-3-8B-Instruct_CourseRec_lora)
 
 ### 5. LLM Explanation Generation
 
@@ -140,11 +145,16 @@ CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_explanation_generation/fi
                     --train_on_inputs \
                     --group_by_length 
 ```
+We offer a trained model [**wt3639/Lllama-3-8B-instruct-exp-adapter**](https://huggingface.co/wt3639/Lllama-3-8B-instruct-exp-adapter)
+
+## Model Evaluation
 
 ## System implement
 
 
 ## Note
-The BERT_domian_pretraining and BERT_base_course_retriever codebase is adapted from [**FlagEmbedding**](https://github.com/FlagOpen/FlagEmbedding) 
+The BERT Domain Pretraining and BERT-base Course Retriever models training codebase is adapted from [**FlagEmbedding**](https://github.com/FlagOpen/FlagEmbedding) 
 
-The LLM_ranker and LLM_explanation_generation codebase is adapted from [**TALLRec**](https://github.com/SAI990323/TALLRec) 
+The LLM Ranker and LLM Explanation Generation models training codebase is adapted from [**TALLRec**](https://github.com/SAI990323/TALLRec) 
+
+Thanks for their contributions.
