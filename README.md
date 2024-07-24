@@ -69,7 +69,7 @@ After training, the encoder model will saved to {output_dir}/encoder_model
 ### 2. BERT-base Skill Extractor
 
 ```
-ner_course_train,eval:ner_course_test {output path} \
+prodigy hf.train.ner ner_course_train,eval:ner_course_test {output path} \
 --epochs 100 \
 --model-name {domain pretrained model} \
 --batch-size 32 \
@@ -142,3 +142,9 @@ CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_explanation_generation/fi
 ```
 
 ## System implement
+
+
+## Note
+The BERT_domian_pretraining and BERT_base_course_retriever codebase is adapted from [**FlagEmbedding**](https://github.com/FlagOpen/FlagEmbedding) 
+
+The LLM_ranker and LLM_explanation_generation codebase is adapted from [**TALLRec**](https://github.com/SAI990323/TALLRec) 
