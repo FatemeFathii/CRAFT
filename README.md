@@ -46,27 +46,60 @@ python ./Dataset/Synthetic_recommendation_explanation _dataset/dataset.py --LLM-
 
 ## Model Training
 
-### BERT Domain Pretraining
+### 1. BERT Domain Pretraining
 
 ```
-torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_domian_pretraining/run.py --output_dir {output path} --model_name_or_path {base model} --train_data ./model_training/Edu_corpora.jsonl --learning_rate 2e-5 --fp16 --num_train_epochs 5 --per_device_train_batch_size 16 --dataloader_drop_last True --max_seq_length 512 --logging_steps 10 --dataloader_num_workers 8 --save_steps 2000
+torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_domian_pretraining/run.py \
+--output_dir {output path} \
+--model_name_or_path {base model} \
+--train_data {domain corpora jsonl file} \
+--learning_rate 2e-5 \
+--fp16 \
+--num_train_epochs 5 \
+--per_device_train_batch_size 16 \
+--dataloader_drop_last True \
+--max_seq_length 512 \
+--logging_steps 10 \
+--dataloader_num_workers 8 \
+--save_steps 2000
 ```
 
 After training, the encoder model will saved to {output_dir}/encoder_model
 
-### BERT-base Skill Extractor
+### 2. BERT-base Skill Extractor
 
 ```
-ner_course_train,eval:ner_course_test {output path} --epochs 100 --model-name {domain pretrained model} --batch-size 32 -lr 5e-6 -v
+ner_course_train,eval:ner_course_test {output path} \
+--epochs 100 \
+--model-name {domain pretrained model} \
+--batch-size 32 \
+-lr 5e-6 
 ```
 
-### BERT-base Course Retriever
+### 3. BERT-base Course Retriever
 
 ```
-torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_base_course_retriever --output_dir {output path} --model_name_or_path {domain pretrained model} --train_data {training set} --learning_rate 1e-5 --fp16 --num_train_epochs 100 --per_device_train_batch_size 4 --dataloader_drop_last True --normlized True --temperature 0.02 --query_max_len 360 --passage_max_len 512 --train_group_size 15 --negatives_cross_device --logging_steps 10 --save_steps 1000 --query_instruction_for_retrieval
+torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_base_course_retriever \
+--output_dir {output path} \
+--model_name_or_path {domain pretrained model} \
+--train_data {training set} \
+--learning_rate 1e-5 \
+--fp16 \
+--num_train_epochs 100 \
+--per_device_train_batch_size 4 \
+--dataloader_drop_last True \
+--normlized True \
+--temperature 0.02 \
+--query_max_len 360 \\
+--passage_max_len 512 \
+--train_group_size 15 \
+--negatives_cross_device \
+--logging_steps 10 \
+--save_steps 1000 \
+--query_instruction_for_retrieval
 ```
 
-### LLM Ranker
+### 4. LLM Ranker
 
 ```
 CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_ranker/finetune_rec.py \
@@ -87,7 +120,7 @@ CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_ranker/finetune_rec.py \
                     --group_by_length 
 ```
 
-### LLM Explanation Generation
+### 5. LLM Explanation Generation
 
 ```
 CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_explanation_generation/finetune.py \
