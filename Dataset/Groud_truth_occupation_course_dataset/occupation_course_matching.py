@@ -5,13 +5,14 @@ import os
 def get_ab_courses(filepath):
     df_occupations = pd.read_csv(os.path.join(filepath,'occupation_info.csv'))
 
-    final_df = pd.DataFrame(columns=['occupation_id', 'occupation_name', 'occupation_dsp', 'pre_require_id', 'course_id', 'course_name', 'course_dsp'])
+    final_df = pd.DataFrame(columns=['occupation_id', 'occupation_name', 'occupation_dsp', 'occupation_skills', 'pre_require_id', 'course_id', 'course_name', 'course_dsp'])
 
     # iterate over each row in the DataFrame
     for index, row in df_occupations.iterrows():
         occupation_id = row['id']
         occupation_name = row['short name']
         occupation_description = row['description']
+        occupation_skills = row['essential skills']
         entry_requirement = row['entry requirements']
         corrected_json_string = entry_requirement.replace("'", '"')
         entry_requirement_json = json.loads(corrected_json_string)
@@ -31,6 +32,7 @@ def get_ab_courses(filepath):
                             temp_df = pd.DataFrame({'occupation_id': [occupation_id],
                                                     'occupation_name': [occupation_name],
                                                     'occupation_dsp': [occupation_description],
+                                                    'occupation_skills': [occupation_skills],
                                                     'pre_require_id': [course_id],
                                                     'course_id': [course_id],
                                                     'course_name': [course_name],

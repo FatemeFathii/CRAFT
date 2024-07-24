@@ -25,7 +25,7 @@ def create_and_divide_jsonl_from_csv(paths, fractions, num_files=8, filepath='./
         part = combined_samples.iloc[i * part_size:(i + 1) * part_size]
         jsonl_strings = part['Content'].apply(lambda x: f'{{"text": "{x}"}}')
         
-        output_path = f'output_part_{i+1}.jsonl'
+        output_path = f'course_description_{i+1}.jsonl'
         with open(os.path.join(filepath,output_path), 'w') as file:
             for item in jsonl_strings:
                 file.write(item + '\n')

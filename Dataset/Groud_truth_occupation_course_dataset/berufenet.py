@@ -4,7 +4,6 @@ import os
 from glob import glob
 import csv
 from bs4 import BeautifulSoup
-import fire
 
 def ensure_directory_exists(directory):
     """Ensure directory exists. If not, create it."""
