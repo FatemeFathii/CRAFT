@@ -26,6 +26,7 @@ def process_aw(filepath):
                     course_id = data['angebot']['id']
                     course_name = data['angebot']['titel']
                     course_dsp = data['angebot']['inhalt']
+                    course_link = data['angebot']["link"]
                     course_kw = ''
                     for keyword in data['angebot']['suchworte']:
                         course_kw += ' '+ keyword['suchwort']
@@ -48,7 +49,8 @@ def process_aw(filepath):
                                                 'pre_require_id': [pre_require_id],
                                                 'course_id': [course_id],
                                                 'course_name': [course_name],
-                                                'course_dsp': [course_dsp + course_kw]})
+                                                'course_dsp': [course_dsp + course_kw],
+                                                'course_link': [course_link]})
                         final_df = pd.concat([final_df, temp_df], ignore_index=True)
     final_df = final_df.drop_duplicates(subset=['occupation_id', 'course_id'])
     final_df.to_csv(os.path.join(filepath,'occupation_course_info_aw.csv'), index=False)

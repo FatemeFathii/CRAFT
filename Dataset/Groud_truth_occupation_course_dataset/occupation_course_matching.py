@@ -25,6 +25,7 @@ def get_ab_courses(filepath):
                         if str(data['id']) == course_id:
                             print(f'Processing course {course_id}')
                             course_name = data['kurzBezeichnungNeutral']
+                            course_link = 'https://web.arbeitsagentur.de/berufenet/beruf/' + str(course_id)
                             for info in data['infofelder']:
                                 if info['ueberschrift'] == 'Ausbildungsinhalte' or info['ueberschrift'] == 'Weiterbildungsinhalte':
                                     course_dsp = info['content']
@@ -36,7 +37,8 @@ def get_ab_courses(filepath):
                                                     'pre_require_id': [course_id],
                                                     'course_id': [course_id],
                                                     'course_name': [course_name],
-                                                    'course_dsp': [course_dsp ]})
+                                                    'course_dsp': [course_dsp ],
+                                                    'course_link': [course_link]})
                             final_df = pd.concat([final_df, temp_df], ignore_index=True)
             except:
                 print(f'No file found for beruf_{course_id}.json')

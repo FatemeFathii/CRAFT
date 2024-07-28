@@ -35,7 +35,7 @@ prodigy ner.manual ner_skill de_dep_news_trf ./course_description_1.jsonl --labe
 ```
 python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {path to save the dataset} --model_name {skill extractor model name}
 ```
-The final output is `occupation_course_info.csv` in the filepath
+The final output is `occupation_course_info.csv` and `course_info.csv` in the filepath
 
 
 ### 4. Synthetic Recommendation Explanation Dataset
@@ -64,7 +64,6 @@ torchrun --nproc_per_node {number of gpus} -m ./Model_training/BERT_domian_pretr
 --save_steps 2000
 ```
 
-After training, the encoder model will saved to {output_dir}/encoder_model
 We offer a trained model [**wt3639/EduGBERT**](https://huggingface.co/wt3639/EduGBERT)
 
 ### 2. BERT-base Skill Extractor
@@ -106,7 +105,7 @@ We offer a trained model [**wt3639/EduGBERT_CourseRec**](https://huggingface.co/
 ### 4. LLM Ranker
 
 ```
-CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_ranker/finetune_rec.py \
+CUDA_VISIBLE_DEVICES={cuda devices}  python -u ./Model_training/LLM_ranker/finetune_rec.py \
                     --base_model {base LLM model such as Meta-Llama-3-8B-Instruct} \
                     --train_data_path {training set} \
                     --val_data_path {validation set} \
@@ -128,7 +127,7 @@ We offer a trained model [**wt3639/Llama-3-8B-Instruct_CourseRec_lora**](https:/
 ### 5. LLM Explanation Generation
 
 ```
-CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_explanation_generation/finetune.py \
+CUDA_VISIBLE_DEVICES={cuda devices} python -u ./Model_training/LLM_explanation_generation/finetune.py \
                     --base_model {base LLM model such as Meta-Llama-3-8B-Instruct} \
                     --train_data_path {training set} \
                     --val_data_path {validation set} \
@@ -148,11 +147,22 @@ CUDA_VISIBLE_DEVICES=$1 python -u ./Model_training/LLM_explanation_generation/fi
 We offer a trained model [**wt3639/Lllama-3-8B-instruct-exp-adapter**](https://huggingface.co/wt3639/Lllama-3-8B-instruct-exp-adapter)
 
 ## Model Evaluation
-
+```
+CUDA_VISIBLE_DEVICES={cuda devices} python -u ./Model_evaluation/evaluation.py \
+                    --course_data {filepath for all course information file} \
+                    --test_data {test set} \
+                    --course_retriver_model {path or name for BERT-base course retriever model} \
+                    --LLM_model {path or name of Large language model} \
+                    --lora_rec_adpater {path or name of LLM ranker model} \
+                    --hf_token {huggingface token}\
+                    --match_result {path for saving the result}\
+                    --top_k 10 
+```
 ## System implement
 
 
 ## Note
+
 The BERT Domain Pretraining and BERT-base Course Retriever models training codebase is adapted from [**FlagEmbedding**](https://github.com/FlagOpen/FlagEmbedding) 
 
 The LLM Ranker and LLM Explanation Generation models training codebase is adapted from [**TALLRec**](https://github.com/SAI990323/TALLRec) 

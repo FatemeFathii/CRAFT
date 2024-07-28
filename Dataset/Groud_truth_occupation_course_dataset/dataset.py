@@ -88,7 +88,9 @@ def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data'
     # columns: ['occupation_id', 'occupation_name', 'occupation_dsp', 'occupation_skills', 'pre_require_id', 'course_id', 'course_name', 'course_dsp', 'course_skills']
     complete_data.to_csv(os.path.join(filepath,'occupation_course_info.csv'), index=False)
 
-    
+    # Save another version with only specific columns and removed duplicates
+    course_info = complete_data[['course_id', 'course_name', 'course_dsp', 'course_skills']].drop_duplicates()
+    course_info.to_csv(os.path.join(filepath,'course_info.csv'), index=False)
 
 if __name__ == '__main__':
     fire.Fire(process_data)
