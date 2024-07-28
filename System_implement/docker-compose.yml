@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  webapp:
+    image: escoai
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./app-data:/app/data
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      MODEL_NAME: "wt3639/EduGBERT_CourseRec"
+      NORMALIZE_EMBEDDINGS: "True"
+      CONVERT_TO_TENSOR: "True"
+      QUERY_INSTRUCTION: ""
+      TOP_K: 10
+      PERSIST_DIRECTORY: "/app/data/EduGBERT_cos_escoai"
+      CSV_FILE_PATH: "/app/data/occupations_de.csv"
+      REC_LORA_MODEL: "wt3639/Llama-3-8B-Instruct_CourseRec_lora"
+      EXP_LORA_MODEL: "wt3639/alpaca_german_english"
+      LLM_MODEL: "meta-llama/Meta-Llama-3-8B-Instruct"
+
+  redis:
+    image: "redis:latest"
+    volumes:
+      - ./redis-data:/data
+
+
+volumes:
+  redis-data:

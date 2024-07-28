@@ -148,7 +148,7 @@ We offer a trained model [**wt3639/Lllama-3-8B-instruct-exp-adapter**](https://h
 
 ## Model Evaluation
 ```
-CUDA_VISIBLE_DEVICES={cuda devices} python -u ./Model_evaluation/evaluation.py \
+python -u ./Model_evaluation/evaluation.py \
                     --course_data {filepath for all course information file} \
                     --test_data {test set} \
                     --course_retriver_model {path or name for BERT-base course retriever model} \
@@ -160,6 +160,10 @@ CUDA_VISIBLE_DEVICES={cuda devices} python -u ./Model_evaluation/evaluation.py \
 ```
 ## System implement
 
+```
+cd ./System_implement
+docker-compose up
+```
 
 ## Note
 

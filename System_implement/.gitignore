@@ -1,0 +1,4 @@
+__pycache__/
+app-data/
+redis-data/
+k8s/
