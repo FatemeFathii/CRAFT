@@ -105,7 +105,7 @@ We offer a trained model [**wt3639/EduGBERT_CourseRec**](https://huggingface.co/
 ### 4. LLM Ranker
 
 ```
-CUDA_VISIBLE_DEVICES={cuda devices}  python -u ./Model_training/LLM_ranker/finetune_rec.py \
+python -u ./Model_training/LLM_ranker/finetune_rec.py \
                     --base_model {base LLM model such as Meta-Llama-3-8B-Instruct} \
                     --train_data_path {training set} \
                     --val_data_path {validation set} \
@@ -127,7 +127,7 @@ We offer a trained model [**wt3639/Llama-3-8B-Instruct_CourseRec_lora**](https:/
 ### 5. LLM Explanation Generation
 
 ```
-CUDA_VISIBLE_DEVICES={cuda devices} python -u ./Model_training/LLM_explanation_generation/finetune.py \
+python -u ./Model_training/LLM_explanation_generation/finetune.py \
                     --base_model {base LLM model such as Meta-Llama-3-8B-Instruct} \
                     --train_data_path {training set} \
                     --val_data_path {validation set} \
@@ -152,13 +152,13 @@ python -u ./Model_evaluation/evaluation.py \
                     --course_data {filepath for all course information file} \
                     --test_data {test set} \
                     --course_retriver_model {path or name for BERT-base course retriever model} \
-                    --LLM_model {path or name of Large language model} \
+                    --LLM_model {path or name of Large language model such as Meta-Llama-3-8B-Instruct} \
                     --lora_rec_adpater {path or name of LLM ranker model} \
                     --hf_token {huggingface token}\
-                    --match_result {path for saving the result}\
-                    --top_k 10 
+                    --result_path {folder path for saving the result}\
+                    --top_k {top k candidates retrieved from all courses defualt 10}
 ```
-## System implement
+## System Implement
 
 ```
 cd ./System_implement

@@ -174,7 +174,7 @@ def compare_docs_with_context(doc_a, doc_b, row, tokenizer, model, device, first
     else:
         return 0  # Consider them equal if the response is unclear
     
-def evaluation(course_data, test_data, course_retriver_model,LLM_model, lora_rec_adpater,hf_token, match_result, top_k=10 ):
+def evaluation(course_data, test_data, course_retriver_model,LLM_model, lora_rec_adpater,hf_token, result_path, top_k=10 ):
     courses = []
     with open(course_data, newline="", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
@@ -234,7 +234,7 @@ def evaluation(course_data, test_data, course_retriver_model,LLM_model, lora_rec
     second_id = tokenizer.convert_tokens_to_ids(second_token)
     
     model = AutoModelForCausalLM.from_pretrained(
-                MODEL_NAME,
+                LLM_model,
                 torch_dtype=torch.float16,
                 device_map="auto",
                 token=hf_token,
@@ -276,7 +276,7 @@ def evaluation(course_data, test_data, course_retriver_model,LLM_model, lora_rec
                 })
         df_results = pd.DataFrame(final_result)
 
-        df_results.to_csv(os.path.join(match_result,'match_result.csv'), index=False)
+        df_results.to_csv(os.path.join(result_path,'match_result.csv'), index=False)
     
 
 
@@ -288,7 +288,9 @@ def evaluation(course_data, test_data, course_retriver_model,LLM_model, lora_rec
     for metric, value in result.items():
         print(f"{metric}: {value}")
     print() 
-
+    with open(os.path.join(result_path,'result.txt'), 'w') as file:
+        for metric, value in result.items():
+            file.write(f"{metric}: {value}\n")
 #main
 if __name__ == "__main__":
     fire.Fire(evaluation)
