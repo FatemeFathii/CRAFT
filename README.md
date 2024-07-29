@@ -33,9 +33,12 @@ prodigy ner.manual ner_skill de_dep_news_trf ./course_description_1.jsonl --labe
 ### 3. Groud Truth Occupation Course Dataset
 
 ```
-python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {path to save the dataset} --model_name {skill extractor model name}
+python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {path to save the dataset} --model_name {skill extractor model name} --fraction 0.8  0.1 0.1 --random_seed 42
 ```
-The final output is `occupation_course_info.csv` and `course_info.csv` in the filepath
+
+- `--fractions`: fraction of training, validation and test set
+
+The final output is `occupation_course_info.csv` , `course_info.csv`, `train_set.csv`,`validation_set` and `test_set.csv` in the filepath, also the file include in `filepath/train` and `filepath/validation` for finetuning Course Retriever and LLm ranker
 
 
 ### 4. Synthetic Recommendation Explanation Dataset
