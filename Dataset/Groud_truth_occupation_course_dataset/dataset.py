@@ -3,6 +3,7 @@ from berufenet import get_berufenet
 from collector import get_aw_courses
 from occupation_course_matching import get_ab_courses
 from preprocess import process_aw
+from csv_to_jsonl import jsonl_preparation
 import os
 import pandas as pd
 from transformers import (
@@ -58,13 +59,15 @@ def skill_extractor(text: str, model_name):
 
     
 
-def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data', model_name='wt3639/NER_skill_extractor'):
+def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data', model_name='wt3639/NER_skill_extractor', fraction=(0.8, 0.1, 0.1), random_seed=42):
     """
     Process and merge data from AW and AB sources, extract skills using NER.
     
     Args:
     filepath (str): Path to the dataset file.
     model_name (str): Model identifier for the NER model.
+    fraction (tuple): Tuple of three numbers indicating the fraction for training, validation, and test sets.
+    random_seed (int): Seed for random operations to ensure reproducibility.
     """
     # Load and process datasets
     get_berufenet(filepath)
@@ -88,6 +91,26 @@ def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data'
     # columns: ['occupation_id', 'occupation_name', 'occupation_dsp', 'occupation_skills', 'pre_require_id', 'course_id', 'course_name', 'course_dsp', 'course_skills']
     complete_data.to_csv(os.path.join(filepath,'occupation_course_info.csv'), index=False)
 
+
+    # Shuffle and split the complete_data based on the fractions
+    shuffled_data = complete_data.sample(frac=1, random_state=random_seed)
+    train_size = int(fraction[0] * len(shuffled_data))
+    validation_size = int(fraction[1] * len(shuffled_data))
+    train_set = shuffled_data[:train_size]
+    validation_set = shuffled_data[train_size:train_size + validation_size]
+    test_set = shuffled_data[train_size + validation_size:]
+
+    # Save the splits to CSV files
+    train_set.to_csv(os.path.join(filepath, 'train_set.csv'), index=False)
+    validation_set.to_csv(os.path.join(filepath, 'validation_set.csv'), index=False)
+    test_set.to_csv(os.path.join(filepath, 'test_set.csv'), index=False)
+    ensure_directory_exists(os.path.join(filepath, 'train'))
+    ensure_directory_exists(os.path.join(filepath, 'validation'))
+
+                            
+    jsonl_preparation(os.path.join(filepath, 'train_set.csv'),os.path.join(filepath, 'train'))
+    jsonl_preparation(os.path.join(filepath, 'validation_set.csv'),os.path.join(filepath, 'validation'))
+    
     # Save another version with only specific columns and removed duplicates
     course_info = complete_data[['course_id', 'course_name', 'course_dsp', 'course_skills']].drop_duplicates()
     course_info.to_csv(os.path.join(filepath,'course_info.csv'), index=False)
