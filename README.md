@@ -38,7 +38,7 @@ python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {pa
 
 - `--fractions`: fraction of training, validation and test set
 
-The final output is `occupation_course_info.csv` , `course_info.csv`, `train_set.csv`,`validation_set` and `test_set.csv` in the filepath, also the file include in `filepath/train` and `filepath/validation` for finetuning Course Retriever and LLm ranker
+The final output is `occupation_course_info.csv` , `course_info.csv`, `train_set.csv`,`validation_set` and `test_set.csv` in the filepath, also the file include in `filepath/train` and `filepath/validation` for finetuning Course Retriever and LLM ranker
 
 
 ### 4. Synthetic Recommendation Explanation Dataset
