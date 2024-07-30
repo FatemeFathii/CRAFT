@@ -17,7 +17,7 @@ The final output is `Udemy_courses.csv` or `AW_courses.csv` in the filepath
 First sample the course descriptions from Course dataset, and generate jsonl files for NER annotation
 
 ```
-python ./Dataset/Skill_entities_annotation_dataset/preprocess.py --paths aw_courses.csv udemy_courses.csv --fractions  0.8 0.2 --num_files 8 filepath {path to save the jsonl files}
+python ./Dataset/Skill_entities_annotation_dataset/preprocess.py --paths aw_courses.csv udemy_courses.csv --fractions  [0.8,0.2] --num_files 8 filepath {path to save the jsonl files}
 ```
 
 - `--paths`: paths of course information from Course dataset for sampling the course descriptions for NER annotation
@@ -33,7 +33,7 @@ prodigy ner.manual ner_skill de_dep_news_trf ./course_description_1.jsonl --labe
 ### 3. Groud Truth Occupation Course Dataset
 
 ```
-python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {path to save the dataset} --model_name {skill extractor model name} --fraction 0.8  0.1 0.1 --random_seed 42
+python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {path to save the dataset} --model_name {skill extractor model name} --fraction [0.8,0.1,0.1] --random_seed 42
 ```
 
 - `--fractions`: fraction of training, validation and test set
@@ -45,6 +45,11 @@ The final output is `occupation_course_info.csv` , `course_info.csv`, `train_set
 
 ```
 python ./Dataset/Synthetic_recommendation_explanation _dataset/dataset.py --LLM-key {OpenAI api key} --occupation_course_data {path of Groud Truth occupation course dataset} --filepath {path to save the dataset}
+```
+### 5. Education Corpora
+
+```
+python ./Dataset/Education_corpora/dataset.py --files {All the csv files relate to Education domain} --ouput {path for ouput file}
 ```
 
 ## Model Training

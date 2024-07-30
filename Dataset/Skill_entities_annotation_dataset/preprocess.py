@@ -3,7 +3,7 @@ import numpy as np
 import os
 import fire
 
-def create_and_divide_jsonl_from_csv(paths, fractions, num_files=8, filepath='./Dataset/Skill_entities_annotation_dataset/data'):
+def create_and_divide_jsonl_from_csv(*paths, fractions, num_files=8, filepath='./Dataset/Skill_entities_annotation_dataset/data'):
     if sum(fractions) != 1:
         raise ValueError("The sum of sampling fractions must be 1.")
     if len(paths) != len(fractions):

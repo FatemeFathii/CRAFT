@@ -59,7 +59,7 @@ def skill_extractor(text: str, model_name):
 
     
 
-def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data', model_name='wt3639/NER_skill_extractor', fraction=(0.8, 0.1, 0.1), random_seed=42):
+def process_data(filepath='./Dataset/Groud_truth_occupation_course_dataset/data', model_name='wt3639/NER_skill_extractor', fraction=[0.8, 0.1, 0.1], random_seed=42):
     """
     Process and merge data from AW and AB sources, extract skills using NER.
     
