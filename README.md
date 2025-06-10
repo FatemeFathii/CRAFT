@@ -6,6 +6,8 @@ This repository releases the code of my Thesis work **AI-Enabled Personalized Co
 
 ### 1. Course Dataset
 
+Our course data is sourced from [**Udemy**](https://www.udemy.com/developers/affiliate/) and [**Arbeitsagentur (AW)**](https://github.com/bundesAPI/weiterbildungssuche-api/). For detailed API information, please refer to the respective websites. Our tool was developed based on the versions available at the time. If there have been any API updates since then, please make the necessary adjustments according to the current API specifications.
+
 ```
 python ./Dataset/Course_dataset/dataset.py --dataset {'AW' or 'Udemy'} --filepath {path to save the dataset}
 ```
@@ -26,11 +28,17 @@ python ./Dataset/Skill_entities_annotation_dataset/preprocess.py --paths aw_cour
 
 Use Prodigy tool to annotate NER dataset. More information about Prodigy can be accessed from https://prodi.gy/
 
+
+We offer a labeled dataset [**wt3639/Skill_Annotation_Dataset**](https://huggingface.co/datasets/wt3639/Skill_Annotation_Dataset)
 ```
 prodigy ner.manual ner_skill de_dep_news_trf ./course_description_1.jsonl --label SKILL
 ```
 
-### 3. Groud Truth Occupation Course Dataset
+### 3. Occupation-Skill Knowledge Base
+
+Our occupation-skill knowledge base is built on two sources: [**ESCO**](https://esco.ec.europa.eu/en/use-esco/download) and the [**Arbeitsagentur Berufenet (BA)**](https://github.com/bundesAPI/berufenet-api) API. For detailed API information, please refer to the respective websites. Our tool was developed based on the versions available at the time. If there have been any API updates since then, please make the necessary adjustments according to the current API specifications.
+
+### 4. Groud Truth Occupation Course Dataset
 
 ```
 python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {path to save the dataset} --model_name {skill extractor model name} --fraction [0.8,0.1,0.1] --random_seed 42
@@ -41,12 +49,14 @@ python ./Dataset/Groud_truth_occupation_course_dataset/dataset.py --filepath {pa
 The final output is `occupation_course_info.csv` , `course_info.csv`, `train_set.csv`,`validation_set` and `test_set.csv` in the filepath, also the file include in `filepath/train` and `filepath/validation` for finetuning Course Retriever and LLM ranker
 
 
-### 4. Synthetic Recommendation Explanation Dataset
+
+
+### 5. Synthetic Recommendation Explanation Dataset
 
 ```
 python ./Dataset/Synthetic_recommendation_explanation _dataset/dataset.py --LLM-key {OpenAI api key} --occupation_course_data {path of Groud Truth occupation course dataset} --filepath {path to save the dataset}
 ```
-### 5. Education Corpora
+### 6. Education Corpora
 
 ```
 python ./Dataset/Education_corpora/dataset.py --files {All the csv files relate to Education domain} --ouput {path for ouput file}
