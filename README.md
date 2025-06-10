@@ -1,6 +1,6 @@
 # Al_enable-course-recommendation-system
 
-This repository releases the code of my Thesis work **AI-Enabled Personalized Course Recommendation System for Career and Skills Development**
+This repository releases the code of my Thesis work **AI-Enabled Personalized Course Recommendation System for Career and Skills Development**. The application of this project is running at https://escoai.myedulife.dbis.rwth-aachen.de/
 
 ## Dataset Preparation
 
@@ -26,7 +26,7 @@ python ./Dataset/Skill_entities_annotation_dataset/preprocess.py --paths aw_cour
 - `--fractions`: sample fraction of each file
 - `--num_files`: number of output jsonl files
 
-Use Prodigy tool to annotate NER dataset. More information about Prodigy can be accessed from https://prodi.gy/
+Use Prodigy tool to annotate NER dataset. Since Prodigy is a paid tool, please refer to the relevant information from https://prodi.gy/ and install it before running the following code. We are using version 1.14.14 for your reference.
 
 
 ```
@@ -63,6 +63,8 @@ python ./Dataset/Education_corpora/dataset.py --files {All the csv files relate 
 ```
 
 ## Model Training
+
+Please run the following model training code on a machine equipped with suitable GPUs. For reference, our configuration includes 4 NVIDIA H100 GPUs with 96 GB HBM2e each, 512 GB of memory, and 48 CPU cores.
 
 ### 1. BERT Domain Pretraining
 
