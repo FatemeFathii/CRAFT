@@ -8,128 +8,15 @@ import pandas as pd
 import glob
 from bs4 import BeautifulSoup
 
-def get_token(filepath):
-    # Client Credentials
-    client_id = "38053956-6618-4953-b670-b4ae7a2360b1"
-    client_secret = "c385073c-3b97-42a9-b916-08fd8a5d1795"
-    grant_type = "client_credentials"
 
-    # URL for obtaining the token
-    token_url = "https://rest.arbeitsagentur.de/oauth/gettoken_cc"
-
-    # Payload for token request
-    token_payload = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "grant_type": grant_type
-    }
-
-    # Sending POST request to obtain the token
-    response = requests.post(token_url, data=token_payload)
-
-    if response.status_code == 200:
-        token_data = response.json()
-        token = token_data.get("access_token")
-        
-        # Saving the token to a file
-        with open(os.path.join(filepath, "token.txt"), "w") as token_file:
-            token_file.write(token)
-        
-        print("Token saved to token.txt")
-
-        return token
-    
-    
-def get_aw_provider_list(filepath):
-    generated_token = get_token(filepath)
-
-    headers = {
-        "Authorization": f"Bearer {generated_token}"
-    }
-
-    # Base URL
-    base_url = "https://rest.arbeitsagentur.de/infosysbub/wbsuche/pc/v1/bildungsangebot"
-    try:
-        response = requests.get(base_url, headers=headers)
-
-        if response.status_code != 200:
-            print(f"GET request failed, status code: {response.status_code}")
-        else:
-            # Parsing the response
-            data = response.json()
-            provider_data = data.get("aggregations", {}).get("ANBIETER", {})
-
-            # Extracting provider IDs
-            provider_ids = list(provider_data.keys())
-
-            # Save provider IDs to a text file
-            with open(os.path.join(filepath,'provider_list.txt'), 'w') as f:
-                for id in provider_ids:
-                    f.write(id + '\n')
-                print("Provider IDs saved to provider_list.txt")
-
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-
-
-
-def get_tocken(filepath):
-    # Client Credentials
-    client_id = "38053956-6618-4953-b670-b4ae7a2360b1"
-    client_secret = "c385073c-3b97-42a9-b916-08fd8a5d1795"
-    grant_type = "client_credentials"
-
-    # URL for obtaining the token
-    token_url = "https://rest.arbeitsagentur.de/oauth/gettoken_cc"
-
-    # Payload for token request
-    token_payload = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "grant_type": grant_type
-    }
-
-    # Sending POST request to obtain the token
-    response = requests.post(token_url, data=token_payload)
-
-    if response.status_code == 200:
-        token_data = response.json()
-        token = token_data.get("access_token")
-        
-        # Saving the token to a file
-        with open(os.path.join(filepath,"token2.txt"), "w") as token_file:
-            token_file.write(token)
-        
-        print("Token saved to token.txt")
-
-        # Using the generated token for subsequent requests
-        headers = {
-            "Authorization": f"Bearer {token}"
-        }
-
-        # URL for the GET request
-        get_url = "https://rest.arbeitsagentur.de/infosysbub/wbsuche/pc/v1/bildungsangebot"
-
-        # Sending a GET request with the token in the header
-        response = requests.get(get_url, headers=headers)
-
-        if response.status_code == 200:
-            # Process the response data here
-            print("GET request successful!")
-            return token
-        else:
-            print("GET request failed:", response.status_code)
-    else:
-        print("Token request failed:", response.status_code)
-    
 def get_aw_courses(filepath):
-    generated_token = get_tocken(filepath)
+    #generated_token = get_tocken(filepath)
     headers = {
-                "OAuthAccessToken": generated_token
+                 "X-API-Key": "infosysbub-wbsuche",
         }
 
     # Read ID list from provider_id.txt
-    id_list_path = os.path.join(filepath, "provider_id.txt")
+    id_list_path = "Dataset\Course_dataset\provider_list.txt"
     if not os.path.isfile(id_list_path):
         print("provider_id.txt does not exist.")
         return
@@ -149,7 +36,7 @@ def get_aw_courses(filepath):
                 start_id, start_page = lines
 
     # Base URL
-    base_url = "https://rest.arbeitsagentur.de/infosysbub/wbsuche/pc/v1/bildungsangebot"
+    base_url = "https://rest.arbeitsagentur.de/infosysbub/wbsuche/pc/v2/bildungsangebot"
 
     # Initialization
     found_start = False if start_id else True
@@ -183,7 +70,7 @@ def get_aw_courses(filepath):
                         with open(last_position_path, "w") as f:
                             f.write(f"{id}\n{current_page}")
                         return
-                    generated_token = get_tocken()
+                    
                     headers = {
                         "OAuthAccessToken": generated_token
                         }
@@ -293,7 +180,7 @@ def aw_preprocess(filename):
     # Remove duplicates based on each column individually
     for column in ['ID', 'Title', 'Content', 'Keywords']:
         all_data = all_data.drop_duplicates(subset=column, keep='first')
-
+    
     # Clean HTML content in the 'Content' column after removing duplicates
     all_data['Content'] = all_data['Content'].apply(lambda x: BeautifulSoup(x, "html.parser").get_text())
     all_data['Content'] = all_data['Content'] + ' ' + all_data['Keywords']
@@ -309,7 +196,6 @@ def ensure_directory_exists(directory):
 
 def aw_get_courses(filepath):
     ensure_directory_exists(filepath)
-    get_aw_provider_list(filepath)
     get_aw_courses(filepath)
     aw_tocsv(filepath)
     aw_preprocess(filepath)
