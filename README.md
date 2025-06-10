@@ -29,10 +29,10 @@ python ./Dataset/Skill_entities_annotation_dataset/preprocess.py --paths aw_cour
 Use Prodigy tool to annotate NER dataset. More information about Prodigy can be accessed from https://prodi.gy/
 
 
-We offer a labeled dataset [**wt3639/Skill_Annotation_Dataset**](https://huggingface.co/datasets/wt3639/Skill_Annotation_Dataset)
 ```
 prodigy ner.manual ner_skill de_dep_news_trf ./course_description_1.jsonl --label SKILL
 ```
+We offer a labeled dataset [**wt3639/Skill_Annotation_Dataset**](https://huggingface.co/datasets/wt3639/Skill_Annotation_Dataset)
 
 ### 3. Occupation-Skill Knowledge Base
 
