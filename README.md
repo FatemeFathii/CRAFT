@@ -1,6 +1,9 @@
-# Al_enable-course-recommendation-system
+# CRAFT: A Course Recommendation Advisor for Future Talent
 
-This repository releases the code of my Thesis work **AI-Enabled Personalized Course Recommendation System for Career and Skills Development**. The application of this project is running at https://escoai.myedulife.dbis.rwth-aachen.de/
+Repository of the ECTEL'20 paper: [CRAFT: A Course Recommendation Advisor for Future Talent]()
+CRAFT application: https://escoai.myedulife.dbis.rwth-aachen.de/
+
+![alt text](architecture-overview.png)
 
 ## Dataset Preparation
 
