@@ -1,9 +1,10 @@
 # CRAFT: A Course Recommendation Advisor for Future Talent
 
 Repository of the ECTEL'20 paper: [CRAFT: A Course Recommendation Advisor for Future Talent]()
-CRAFT application: https://escoai.myedulife.dbis.rwth-aachen.de/
 
-![alt text](architecture-overview.png)
+CRAFT web application: https://escoai.myedulife.dbis.rwth-aachen.de/
+
+![alt text](architecture-overview.jpg)
 
 ## Dataset Preparation
 
