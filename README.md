@@ -196,3 +196,11 @@ The BERT Domain Pretraining and BERT-base Course Retriever models training codeb
 The LLM Ranker and LLM Explanation Generation models training codebase is adapted from [**TALLRec**](https://github.com/SAI990323/TALLRec) 
 
 Thanks for their contributions.
+
+## Citation
+
+```tex
+
+
+
+```
