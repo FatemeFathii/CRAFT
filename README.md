@@ -201,6 +201,13 @@ Thanks for their contributions.
 
 ```tex
 
-
+@inproceedings{fathi2025craft,
+  title={CRAFT: A Course Recommendation Advisor for Future Talent},
+  author={Fathi, Fatemeh and Wu, Tao and Decker, Stefan},
+  booktitle={European Conference on Technology Enhanced Learning},
+  pages={153--167},
+  year={2025},
+  organization={Springer}
+}
 
 ```
